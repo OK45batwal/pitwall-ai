@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: pitwall_ai
+      POSTGRES_USER: pitwall
+      POSTGRES_PASSWORD: pitwall
+    ports:
+      - "5432:5432"
+    volumes:
+      - pitwall-postgres:/var/lib/postgresql/data
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+volumes:
+  pitwall-postgres:

@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: PitWall AI API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: Service status
+  /api/v1/auth/login:
+    post:
+      summary: Issue a JWT access token
+      responses:
+        "200":
+          description: Bearer token response
+  /api/v1/predictions/winner:
+    get:
+      summary: Race winner probability distribution
+      responses:
+        "200":
+          description: Cached winner prediction
+  /api/v1/strategy/simulate:
+    post:
+      summary: Simulate pit strategy and undercut or overcut opportunity
+      responses:
+        "200":
+          description: Strategy simulation result
+  /api/v1/predictions/safety-car:
+    get:
+      summary: Estimate safety car deployment probability
+      responses:
+        "200":
+          description: Safety car probability
+  /api/v1/ws/telemetry:
+    get:
+      summary: WebSocket telemetry stream
+      responses:
+        "101":
+          description: WebSocket upgrade
