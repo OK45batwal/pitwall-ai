@@ -1,63 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AlertTriangle, ChevronDown, CloudRain, Droplets, Radio, Thermometer, Trophy, Wind } from "lucide-react";
 import {
-  AlertTriangle,
-  ChevronDown,
-  CloudRain,
-  Droplets,
-  Radio,
-  Thermometer,
-  Timer,
-  Trophy,
-  Wind,
-} from "lucide-react";
-import {
-  type Session,
-  type Driver,
-  type Position,
-  type Weather,
-  type PitStop,
-  type RaceControl,
-  type Interval,
-  type Lap,
-  fetchSessions,
-  fetchDrivers,
-  fetchPositions,
-  fetchIntervals,
-  fetchWeather,
-  fetchPitStops,
-  fetchRaceControl,
-  fetchLaps,
-  driverColor,
-  mergePositions,
+  type Session, type Driver, type Position, type Weather, type PitStop,
+  type RaceControl, type Interval, type Lap,
+  fetchSessions, fetchDrivers, fetchPositions, fetchIntervals, fetchWeather,
+  fetchPitStops, fetchRaceControl, fetchLaps, driverColor, mergePositions,
 } from "@/lib/openf1";
 import { TrackLayoutMap } from "@/components/track/track-layout-map";
 import { PitWindowCalculator } from "@/components/analysis/pit-window-calculator";
 import { TelemetryComparison } from "@/components/analysis/telemetry-comparison";
 import { StrategyAdvisor } from "@/components/analysis/strategy-advisor";
 import { RaceTimeline } from "@/components/analysis/race-timeline";
-import { LapDeltaChart, RaceSimulationChart, TireWearChart, WinProbabilityChart } from "@/components/charts/telemetry-charts";
-import { drivers, leaderboard, pitTimeline, predictionSummary } from "@/lib/mock-data";
+import { LapDeltaChart, buildLapDeltaData, TireWearChart } from "@/components/charts/telemetry-charts";
+import { leaderboard } from "@/lib/mock-data";
 
-function LiveDot() {
-  return (
-    <span className="relative flex h-2.5 w-2.5">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-racingGreen opacity-75" />
-      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-racingGreen" />
-    </span>
-  );
-}
-
-function SectionCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`rounded-2xl glass-card ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-interface LiveState {
+interface State {
   session: Session | null;
   sessions: Session[];
   drivers: Driver[];
@@ -69,310 +28,291 @@ interface LiveState {
   laps: Lap[];
   loading: boolean;
   error: string | null;
-  selectedSessionKey: number | null;
+  sessionKey: number | null;
 }
 
 export function Dashboard() {
-  const [state, setState] = useState<LiveState>({
-    session: null,
-    sessions: [],
-    drivers: [],
-    positions: [],
-    intervals: [],
-    weather: null,
-    pitStops: [],
-    raceControl: [],
-    laps: [],
-    loading: true,
-    error: null,
-    selectedSessionKey: null,
+  const [s, set] = useState<State>({
+    session: null, sessions: [], drivers: [], positions: [], intervals: [],
+    weather: null, pitStops: [], raceControl: [], laps: [],
+    loading: true, error: null, sessionKey: null,
   });
 
   async function loadSessions() {
     try {
-      const sessions = await fetchSessions(2026);
-      const relevant = sessions.filter(
-        (s) => s.session_type === "Race" || s.session_type === "Qualifying" || s.session_type === "Practice"
-      );
-      const latest = relevant.length > 0 ? relevant[relevant.length - 1] : sessions[sessions.length - 1];
-      if (latest) {
-        await loadSession(latest.session_key, sessions);
-      } else {
-        setState((s) => ({ ...s, sessions, loading: false }));
-      }
+      const all = await fetchSessions(2025);
+      const race = all.filter(r => r.session_type === "Race" || r.session_type === "Qualifying");
+      const latest = race[race.length - 1] ?? all[all.length - 1];
+      if (latest) await loadSession(latest.session_key, all);
+      else set(p => ({ ...p, sessions: all, loading: false }));
     } catch (e: unknown) {
-      setState((s) => ({ ...s, loading: false, error: (e as Error).message }));
+      set(p => ({ ...p, loading: false, error: (e as Error).message }));
     }
   }
 
-  async function loadSession(key: number, existingSessions?: Session[]) {
+  async function loadSession(key: number, existing?: Session[]) {
     try {
       const [drivers, positions, intervals, weather, pitStops, raceControl, laps] = await Promise.all([
-        fetchDrivers(key),
-        fetchPositions(key),
-        fetchIntervals(key),
-        fetchWeather(key),
-        fetchPitStops(key),
-        fetchRaceControl(key),
-        fetchLaps(key),
+        fetchDrivers(key), fetchPositions(key), fetchIntervals(key),
+        fetchWeather(key), fetchPitStops(key), fetchRaceControl(key), fetchLaps(key),
       ]);
-      const sessions = existingSessions ?? state.sessions;
-      const session = sessions.find((s) => s.session_key === key) ?? null;
-      const weatherLatest = Array.isArray(weather) ? weather[weather.length - 1] : null;
-      setState((s) => ({
-        ...s,
-        sessions,
-        session,
-        selectedSessionKey: key,
+      const sessions = existing ?? s.sessions;
+      const session = sessions.find(x => x.session_key === key) ?? null;
+      set(p => ({
+        ...p, sessions, session, sessionKey: key,
         drivers,
         positions: positions.sort((a, b) => (a.position ?? 99) - (b.position ?? 99)),
-        intervals,
-        weather: weatherLatest,
-        pitStops,
-        raceControl: raceControl.slice(-15),
-        laps,
-        loading: false,
-        error: null,
+        intervals, weather: Array.isArray(weather) ? weather[weather.length - 1] : null,
+        pitStops, raceControl: raceControl.slice(-15), laps,
+        loading: false, error: null,
       }));
     } catch (e: unknown) {
-      setState((s) => ({ ...s, loading: false, error: (e as Error).message }));
+      set(p => ({ ...p, loading: false, error: (e as Error).message }));
     }
   }
 
-  useEffect(() => {
-    loadSessions();
-  }, []);
+  useEffect(() => { loadSessions(); }, []);
 
   useEffect(() => {
-    if (!state.selectedSessionKey) return;
-    const id = setInterval(() => loadSession(state.selectedSessionKey!), 4000);
+    if (!s.sessionKey) return;
+    const id = setInterval(() => loadSession(s.sessionKey!), 4000);
     return () => clearInterval(id);
-  }, [state.selectedSessionKey]);
+  }, [s.sessionKey]);
 
-  const mergedPositions = state.positions.length > 0
-    ? mergePositions(state.positions, state.intervals).map(p => ({
+  const mergedPositions = useMemo(() => s.positions.length > 0
+    ? mergePositions(s.positions, s.intervals).map(p => ({
         ...p,
-        driver: state.drivers.find(d => d.driver_number === p.driver_number) ?? null,
+        driver: s.drivers.find(d => d.driver_number === p.driver_number) ?? null,
       }))
-    : [];
+    : [], [s.positions, s.intervals, s.drivers]);
 
-  const hasLiveData = state.drivers.length > 0;
+  const lapDeltaData = useMemo(() =>
+    s.laps.length > 0 && s.drivers.length > 0 ? buildLapDeltaData(s.laps, s.drivers) : [],
+  [s.laps, s.drivers]);
+
+  const displayPositions = mergedPositions.length > 0
+    ? mergedPositions
+    : leaderboard.map((d, i) => ({
+        position: i + 1, driver_number: 0, interval: null, gap_to_leader: null,
+        driver: null, name: d.name, team: d.team, color: d.color,
+      }));
 
   return (
-    <div className="space-y-5">
-      {state.loading && (
-        <div className="flex items-center justify-center py-12">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-electricBlue border-t-transparent" />
+    <div className="space-y-4 animate-fade-in">
+
+      {/* Loading */}
+      {s.loading && (
+        <div className="flex items-center justify-center py-16">
+          <div className="h-7 w-7 animate-spin rounded-full border-2 border-electricBlue border-t-transparent" />
         </div>
       )}
 
-      {state.error && (
-        <div className="flex items-center gap-3 rounded-xl border border-signalRed/30 bg-signalRed/10 px-4 py-3 text-sm text-signalRed">
-          <AlertTriangle size={16} />
-          OpenF1 unavailable — demo mode active. ({state.error})
+      {/* Error */}
+      {s.error && (
+        <div className="flex items-center gap-3 rounded-xl border border-signalRed/25 bg-signalRed/8 px-4 py-3 text-sm text-signalRed">
+          <AlertTriangle size={15} />
+          OpenF1 unavailable — demo mode ({s.error})
         </div>
       )}
 
-      {state.sessions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Session</label>
-          <div className="relative">
-            <select
-              className="appearance-none rounded-xl border border-white/[0.1] bg-white/[0.05] px-4 py-2 pr-10 text-sm font-semibold text-white backdrop-blur-sm cursor-pointer"
-              value={state.selectedSessionKey ?? ""}
-              onChange={(e) => loadSession(Number(e.target.value))}
-            >
-              {state.sessions.slice(-10).map((s) => (
-                <option key={s.session_key} value={s.session_key}>
-                  {s.circuit_short_name ?? s.location ?? "Session"} — {s.session_name} ({s.year})
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+      {/* Session bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl glass-panel px-5 py-4">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Trophy size={20} className="text-amber" />
+            <div>
+              <h2 className="text-lg font-black text-white">{s.session?.circuit_short_name ?? "Grand Prix"}</h2>
+              <p className="text-xs text-slate-500">{s.session?.session_name ?? "Session"} &middot; {s.session?.location ?? ""}</p>
+            </div>
           </div>
-          {hasLiveData && <LiveDot />}
-          <span className="text-xs text-slate-500">
-            {state.session?.date_start ? new Date(state.session.date_start).toLocaleDateString() : ""}
-          </span>
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="f1-live-dot" />
+            <span className="text-xs font-semibold text-racingGreen">LIVE</span>
+            <span className="text-xs text-slate-600">Lap {s.laps.length > 0 ? Math.max(...s.laps.map(l => l.lap_number)) : "--"}</span>
+          </div>
         </div>
-      )}
+        <div className="flex items-center gap-2">
+          <select
+            className="appearance-none rounded-lg border px-3 py-1.5 pr-8 text-xs font-medium bg-white/[0.04] text-white cursor-pointer"
+            style={{ borderColor: 'var(--border)' }}
+            value={s.sessionKey ?? ""}
+            onChange={e => loadSession(Number(e.target.value))}
+          >
+            {s.sessions.slice(-10).map(x => (
+              <option key={x.session_key} value={x.session_key}>
+                {x.circuit_short_name ?? x.location} — {x.session_name}
+              </option>
+            ))}
+          </select>
+          <ChevronDown size={13} className="-ml-7 text-slate-500 pointer-events-none" />
+        </div>
+      </div>
 
+      {/* 4 stat cards */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {([
-          { label: "Race", value: state.session?.circuit_short_name ?? "Monaco GP", sub: state.session?.session_name ?? "Race" },
-          { label: "Drivers", value: hasLiveData ? String(state.drivers.length) : "10", sub: "on track" },
-          { label: "Safety Car", value: state.raceControl.some((m) => m.flag === "SC" || m.flag === "RED") ? "Active" : "None", sub: state.raceControl.some((m) => m.flag === "SC") ? "Deployed" : "Clear" },
-          { label: "Track Temp", value: state.weather ? `${state.weather.track_temp}°C` : "42°C", sub: state.weather ? `Air ${state.weather.air_temp}°C` : "Air 28°C" },
-        ] as const).map(({ label, value, sub }) => (
-          <div key={label} className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.04] p-4 backdrop-blur-sm">
-            {label === "Race" && <Trophy size={18} className="text-electricBlue shrink-0" />}
-            {label === "Drivers" && <Radio size={18} className="text-electricBlue shrink-0" />}
-            {label === "Safety Car" && <AlertTriangle size={18} className="text-electricBlue shrink-0" />}
-            {label === "Track Temp" && <Droplets size={18} className="text-electricBlue shrink-0" />}
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">{label}</p>
-              <p className="mt-0.5 text-xl font-black text-white">{value}</p>
-              <p className="text-[11px] text-slate-500">{sub}</p>
+          { label: "Drivers", value: s.drivers.length ? String(s.drivers.length) : "10", sub: "on track", icon: Radio },
+          { label: "Track", value: s.weather ? `${s.weather.track_temp}°C` : "—", sub: "temperature", icon: Thermometer },
+          { label: "Air", value: s.weather ? `${s.weather.air_temp}°C` : "—", sub: "ambient", icon: CloudRain },
+          { label: "Wind", value: s.weather ? `${s.weather.wind_speed} km/h` : "—", sub: `${s.weather?.humidity ?? "--"}% humidity`, icon: Wind },
+        ] as const).map(({ label, value, sub, icon: Icon }) => (
+          <div key={label} className="stat-card">
+            <div className="flex items-center gap-3">
+              <Icon size={16} className="text-slate-500 shrink-0" />
+              <div>
+                <p className="stat-label">{label}</p>
+                <p className="stat-value text-white">{value}</p>
+                <p className="stat-sub">{sub}</p>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {state.weather && (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-          {([
-            ["Track", `${state.weather.track_temp}°C`],
-            ["Air", `${state.weather.air_temp}°C`],
-            ["Rain", `${Math.round(state.weather.rainfall * 100)}%`],
-            ["Wind", `${state.weather.wind_speed} km/h`],
-            ["Humidity", `${state.weather.humidity}%`],
-          ] as const).map(([label, value]) => (
-            <div key={label} className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2.5">
-              <Thermometer size={14} className="text-slate-500 shrink-0" />
-              <div>
-                <p className="text-[10px] text-slate-500">{label}</p>
-                <p className="font-mono text-sm font-bold text-white">{value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
-        <SectionCard>
-          <div className="mb-4 flex items-center justify-between">
+      {/* Main content: positions + track */}
+      <div className="grid gap-4 xl:grid-cols-[1fr_380px]">
+        <div className="glass-card rounded-xl p-4">
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Live Positions</h2>
-              <p className="mt-0.5 text-xs text-slate-500">Real-time driver standings</p>
+              <h3 className="panel-title">Live Positions</h3>
+              <p className="panel-sub">Real-time driver standings</p>
             </div>
-            {hasLiveData && <LiveDot />}
+            <span className="f1-live-dot" />
           </div>
-          <div className="space-y-1.5">
-            {(mergedPositions.length > 0 ? mergedPositions : leaderboard.map((d, i) => ({
-              position: i + 1, driver_number: 0, interval: null, gap_to_leader: null,
-              retired: false, pits: 0, stop: 0, driver: null, name: d.name, team: d.team, color: d.color,
-            }))).slice(0, 15).map((entry: any, i: number) => (
-              <div
-                key={entry.driver_number ?? i}
-                className="grid grid-cols-[36px_1fr_auto_auto] items-center gap-3 rounded-lg border border-white/[0.04] bg-white/[0.02] px-3 py-2.5 hover:bg-white/[0.05]"
-              >
-                <span className={`font-mono text-sm font-black ${entry.position === 1 ? "text-amber" : "text-slate-400"}`}>
-                  P{entry.position}
-                </span>
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="h-2.5 w-2.5 shrink-0 rounded-full"
-                    style={{ background: entry.driver ? driverColor(entry.driver) : entry.color ?? "#888" }}
-                  />
-                  <div>
-                    <span className="text-sm font-semibold text-white">
-                      {entry.driver?.full_name ?? entry.name ?? `Driver ${entry.driver_number}`}
+          <div className="space-y-1">
+            {displayPositions.slice(0, 15).map((entry, i) => {
+              const d = entry.driver as Driver | null;
+              return (
+                <div
+                  key={entry.driver_number ?? i}
+                  className={`f1-timing-row ${entry.position === 1 ? "podium-1" : entry.position === 2 ? "podium-2" : entry.position === 3 ? "podium-3" : ""}`}
+                >
+                  <span className={`font-mono text-sm font-bold ${entry.position === 1 ? "text-amber" : "text-slate-400"}`}>
+                    P{entry.position}
+                  </span>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: d ? driverColor(d) : entry.color ?? "#888" }} />
+                    <span className="text-sm font-semibold text-white truncate">
+                      {d?.name_acronym ?? d?.code ?? d?.full_name ?? entry.name ?? `#${entry.driver_number}`}
                     </span>
-                    <span className="ml-2 text-[10px] text-slate-500">{entry.driver?.team_name ?? entry.team ?? ""}</span>
+                    <span className="hidden sm:inline text-[10px] text-slate-600 truncate">
+                      {d?.team_name ?? entry.team ?? ""}
+                    </span>
                   </div>
+                  <span className="font-mono text-xs text-right text-electricBlue">
+                    {entry.interval != null ? `${(entry.interval / 1e3).toFixed(3)}s` : "--"}
+                  </span>
+                  <span className="font-mono text-xs text-right text-slate-500">
+                    {entry.gap_to_leader != null ? `+${(entry.gap_to_leader / 1e3).toFixed(3)}s` : "Leader"}
+                  </span>
                 </div>
-                <span className="font-mono text-xs text-electricBlue">
-                  {entry.interval != null ? `${(entry.interval / 1000).toFixed(3)}s` : "--"}
-                </span>
-                <span className="font-mono text-xs text-slate-400">
-                  {entry.gap_to_leader != null ? `+${(entry.gap_to_leader / 1000).toFixed(3)}s` : "Leader"}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </SectionCard>
+        </div>
 
-        <div className="space-y-4">
-          <SectionCard className="p-4">
-            <div className="mb-4">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Track Layout</h2>
-              <p className="mt-0.5 text-xs text-slate-500">
-                {state.session?.circuit_short_name ?? "Real circuit from OpenF1"}
-              </p>
-            </div>
-            <TrackLayoutMap
-              sessionKey={state.selectedSessionKey}
-              drivers={state.drivers.slice(0, 14)}
-            />
-          </SectionCard>
+        <div className="glass-card rounded-xl p-4">
+          <div className="mb-3">
+            <h3 className="panel-title">Track Layout</h3>
+            <p className="panel-sub">{s.session?.circuit_short_name ?? "Circuit"}</p>
+          </div>
+          <TrackLayoutMap sessionKey={s.sessionKey} drivers={s.drivers.slice(0, 14)} />
         </div>
       </div>
 
-      {state.selectedSessionKey && (
-        <>
-          <SectionCard>
-            <StrategyAdvisor sessionKey={state.selectedSessionKey} />
-          </SectionCard>
+      {/* Weather row + Race control */}
+      <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
+        {s.weather && (
+          <div className="glass-card rounded-xl p-4">
+            <h3 className="panel-title mb-3">Track Conditions</h3>
+            <div className="grid grid-cols-5 gap-2">
+              {([
+                ["Track", `${s.weather.track_temp}°C`, Thermometer],
+                ["Air", `${s.weather.air_temp}°C`, CloudRain],
+                ["Rain", `${Math.round(s.weather.rainfall * 100)}%`, Droplets],
+                ["Wind", `${s.weather.wind_speed} km/h`, Wind],
+                ["Humidity", `${s.weather.humidity}%`, Droplets],
+              ] as const).map(([label, value, Icon]) => (
+                <div key={label} className="text-center">
+                  <Icon size={13} className="mx-auto text-slate-500" />
+                  <p className="mt-1 text-[10px] text-slate-500">{label}</p>
+                  <p className="font-mono text-sm font-bold text-white">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-          <div className="grid gap-5 xl:grid-cols-2">
-            <SectionCard>
-              <PitWindowCalculator sessionKey={state.selectedSessionKey} />
-            </SectionCard>
-            <SectionCard>
-              <TelemetryComparison sessionKey={state.selectedSessionKey} />
-            </SectionCard>
+        {s.raceControl.length > 0 && (
+          <div className="glass-card rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="panel-title">Race Control</h3>
+              {s.raceControl.some(m => m.flag === "SC" || m.flag === "RED") && (
+                <span className="session-badge flag-sc"><span className="h-1.5 w-1.5 rounded-full bg-amber animate-pulse" /> Caution</span>
+              )}
+            </div>
+            <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
+              {s.raceControl.slice(-8).map((msg, i) => (
+                <div key={i} className="flex items-start gap-2 rounded-lg bg-white/[0.015] px-2.5 py-1.5">
+                  <span className={`shrink-0 rounded px-1 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                    msg.flag === "GREEN" ? "flag-green" :
+                    msg.flag === "SC" || msg.flag === "VSC" ? "flag-sc" :
+                    msg.flag === "RED" ? "flag-red" :
+                    msg.flag === "YELLOW" ? "flag-yellow" : "bg-white/10 text-slate-400"
+                  }`}>
+                    {msg.flag ?? "UNK"}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs text-slate-300 truncate">{msg.message}</p>
+                    {msg.lap_number && <p className="text-[10px] text-slate-600">Lap {msg.lap_number}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Strategy + analysis */}
+      {s.sessionKey && (
+        <>
+          <div className="glass-card rounded-xl p-4">
+            <StrategyAdvisor sessionKey={s.sessionKey} />
           </div>
 
-          <SectionCard>
-            <RaceTimeline sessionKey={state.selectedSessionKey} refreshInterval={5000} />
-          </SectionCard>
+          <div className="grid gap-4 xl:grid-cols-2">
+            <div className="glass-card rounded-xl p-4">
+              <PitWindowCalculator sessionKey={s.sessionKey} />
+            </div>
+            <div className="glass-card rounded-xl p-4">
+              <TelemetryComparison sessionKey={s.sessionKey} />
+            </div>
+          </div>
+
+          <div className="glass-card rounded-xl p-4">
+            <RaceTimeline sessionKey={s.sessionKey} refreshInterval={5000} />
+          </div>
         </>
       )}
 
-      {state.raceControl.length > 0 && (
-        <SectionCard>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Race Control</h2>
-            {state.raceControl.some((m) => m.flag === "SC" || m.flag === "RED") && (
-              <span className="flex items-center gap-1.5 rounded-full bg-amber/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber animate-pulse" />
-                Caution Active
-              </span>
-            )}
-          </div>
-          <div className="space-y-2">
-            {state.raceControl.slice(-8).map((msg, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-lg border border-white/[0.04] bg-white/[0.02] px-3 py-2">
-                <span className={`mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
-                  msg.flag === "GREEN" ? "bg-racingGreen/20 text-racingGreen" :
-                  msg.flag === "SC" || msg.flag === "VSC" ? "bg-amber/20 text-amber" :
-                  msg.flag === "RED" ? "bg-signalRed/20 text-signalRed" :
-                  msg.flag === "YELLOW" ? "bg-amber/20 text-amber" :
-                  "bg-white/10 text-slate-400"
-                }`}>
-                  {msg.flag ?? "UNK"}
-                </span>
-                <div>
-                  <p className="text-xs text-white">{msg.message}</p>
-                  {msg.lap_number && <p className="mt-0.5 text-[10px] text-slate-500">Lap {msg.lap_number}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </SectionCard>
-      )}
-
-      <div className="grid gap-5 xl:grid-cols-2">
-        <SectionCard>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Lap Delta</h2>
-          <LapDeltaChart />
-        </SectionCard>
-        <SectionCard>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Tire Wear</h2>
+      {/* Charts */}
+      <div className="grid gap-4 xl:grid-cols-2">
+        <div className="glass-card rounded-xl p-4">
+          <h3 className="panel-title mb-3">
+            Lap Delta
+            {lapDeltaData.length > 0 && <span className="ml-2 text-[10px] font-normal text-slate-600">(last {lapDeltaData.length} laps)</span>}
+          </h3>
+          {lapDeltaData.length > 0
+            ? <LapDeltaChart data={lapDeltaData} />
+            : <p className="text-xs text-slate-600 py-8 text-center">No lap data available yet</p>
+          }
+        </div>
+        <div className="glass-card rounded-xl p-4">
+          <h3 className="panel-title mb-3">Tire Wear</h3>
           <TireWearChart />
-        </SectionCard>
+        </div>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
-        <SectionCard>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Race Simulation</h2>
-          <RaceSimulationChart />
-        </SectionCard>
-        <SectionCard>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-200">Win Probability</h2>
-          <WinProbabilityChart />
-        </SectionCard>
-      </div>
     </div>
   );
 }

@@ -16,6 +16,7 @@
     <img src="https://img.shields.io/badge/Redis-7-FF4438?logo=redis" alt="Redis 7" />
     <img src="https://img.shields.io/badge/Three.js-r184-000000?logo=three.js" alt="Three.js" />
     <img src="https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss" alt="Tailwind CSS 4" />
+    <img src="https://img.shields.io/badge/F1_Timing-UI-ff8700" alt="F1 Timing UI" />
   </p>
 
   <br/>

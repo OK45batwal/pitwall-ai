@@ -1,232 +1,230 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" font-family="system-ui,-apple-system,sans-serif">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0a0f1e"/>
-      <stop offset="100%" stop-color="#111827"/>
+      <stop offset="0%" stop-color="#06080f"/>
+      <stop offset="100%" stop-color="#0a0d18"/>
     </linearGradient>
-    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1e40af" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.05"/>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(16,22,40,0.92)"/>
+      <stop offset="100%" stop-color="rgba(8,11,22,0.82)"/>
     </linearGradient>
   </defs>
 
-  <!-- Outer frame -->
-  <rect width="1200" height="750" fill="url(#bg)" rx="16"/>
-  <rect x="1" y="1" width="1198" height="748" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+  <rect width="1200" height="750" fill="url(#bg)" rx="12"/>
+  <rect x="1" y="1" width="1198" height="748" rx="11" fill="none" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
 
   <!-- Window controls -->
-  <circle cx="30" cy="25" r="6" fill="#ef4444"/>
-  <circle cx="52" cy="25" r="6" fill="#f59e0b"/>
-  <circle cx="74" cy="25" r="6" fill="#22c55e"/>
-  <text x="600" y="30" text-anchor="middle" fill="#475569" font-size="12" font-weight="600">PitWall AI — Dashboard</text>
+  <circle cx="28" cy="22" r="5" fill="#e8002d"/>
+  <circle cx="46" cy="22" r="5" fill="#ffb800"/>
+  <circle cx="64" cy="22" r="5" fill="#00da7a"/>
 
   <!-- === Sidebar === -->
-  <rect x="0" y="45" width="220" height="705" fill="#0f172a"/>
-  <line x1="220" y1="45" x2="220" y2="750" stroke="#1e293b" stroke-width="1"/>
+  <rect x="0" y="40" width="200" height="710" fill="#06080f"/>
+  <line x1="200" y1="40" x2="200" y2="750" stroke="rgba(148,163,184,0.08)" stroke-width="1"/>
 
-  <!-- Logo -->
-  <rect x="20" y="62" width="32" height="32" rx="8" fill="#3b82f6"/>
-  <text x="36" y="83" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">P</text>
-  <text x="65" y="83" fill="#e2e8f0" font-size="16" font-weight="700">PitWall AI</text>
+  <rect x="16" y="58" width="28" height="28" rx="6" fill="#ff8700"/>
+  <text x="30" y="77" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">P</text>
+  <text x="54" y="77" fill="#e2e8f0" font-size="14" font-weight="800">Pit<span fill="#ff8700">Wall</span></text>
+  <circle cx="54" cy="87" r="3" fill="#00da7a"/>
 
-  <!-- Nav items -->
-  <rect x="12" y="120" width="196" height="36" rx="6" fill="#1e293b" stroke="#3b82f6" stroke-width="1"/>
-  <text x="40" y="143" fill="#3b82f6" font-size="13">Dashboard</text>
+  <!-- Nav -->
+  <rect x="12" y="108" width="176" height="32" rx="6" fill="rgba(255,135,0,0.08)" stroke="rgba(255,135,0,0.15)" stroke-width="1"/>
+  <text x="46" y="129" fill="#ff8700" font-size="12" font-weight="600">Dashboard</text>
 
-  <g opacity="0.5">
-    <rect x="12" y="164" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="187" fill="#94a3b8" font-size="13">Live Race</text>
-    <rect x="12" y="208" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="231" fill="#94a3b8" font-size="13">Drivers</text>
-    <rect x="12" y="252" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="275" fill="#94a3b8" font-size="13">Teams</text>
-    <rect x="12" y="296" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="319" fill="#94a3b8" font-size="13">Strategy</text>
-    <rect x="12" y="340" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="363" fill="#94a3b8" font-size="13">AI Predictions</text>
-    <rect x="12" y="384" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="407" fill="#94a3b8" font-size="13">History</text>
-    <rect x="12" y="428" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="451" fill="#94a3b8" font-size="13">Weather</text>
+  <g opacity="0.45">
+    <text x="46" y="165" fill="#94a3b8" font-size="12">Live Race</text>
+    <text x="46" y="199" fill="#94a3b8" font-size="12">Drivers</text>
+    <text x="46" y="233" fill="#94a3b8" font-size="12">Teams</text>
+    <text x="46" y="267" fill="#94a3b8" font-size="12">Strategy</text>
+    <text x="46" y="301" fill="#94a3b8" font-size="12">AI Center</text>
+    <text x="46" y="335" fill="#94a3b8" font-size="12">History</text>
+    <text x="46" y="369" fill="#94a3b8" font-size="12">Weather</text>
   </g>
 
-  <!-- Divider -->
-  <line x1="20" y1="492" x2="200" y2="492" stroke="#1e293b" stroke-width="1"/>
+  <!-- Data source -->
+  <rect x="12" y="420" width="176" height="44" rx="6" fill="rgba(255,135,0,0.05)" stroke="rgba(255,135,0,0.1)" stroke-width="1"/>
+  <text x="24" y="438" fill="#ff8700" font-size="8" font-weight="700" letter-spacing="2">DATA SOURCE</text>
+  <text x="24" y="454" fill="#e2e8f0" font-size="11" font-weight="600">OpenF1 API</text>
 
-  <g opacity="0.4">
-    <rect x="12" y="508" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="531" fill="#94a3b8" font-size="13">Settings</text>
-    <rect x="12" y="552" width="196" height="36" rx="6" fill="none"/>
-    <text x="40" y="575" fill="#94a3b8" font-size="13">Profile</text>
-  </g>
+  <!-- === Session Bar === -->
+  <rect x="220" y="55" width="960" height="52" rx="8" fill="url(#card)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="238" y="78" fill="#e2e8f0" font-size="17" font-weight="900">Bahrain Grand Prix</text>
+  <text x="238" y="97" fill="#64748b" font-size="11">Race &middot; Sakhir International Circuit</text>
 
-  <!-- === Main Content === -->
-  <rect x="240" y="60" width="350" height="140" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="260" y="88" fill="#94a3b8" font-size="11">CURRENT SESSION</text>
-  <text x="260" y="112" fill="#e2e8f0" font-size="20" font-weight="700">2025 Bahrain Grand Prix</text>
-  <text x="260" y="135" fill="#64748b" font-size="13">Round 4 · Sakhir International Circuit</text>
-  <!-- Status badge -->
-  <rect x="260" y="150" width="72" height="22" rx="11" fill="#065f46"/>
-  <circle cx="277" cy="161" r="4" fill="#22c55e"/>
-  <text x="287" y="166" fill="#6ee7b7" font-size="11" font-weight="600">LIVE</text>
-  <!-- Lap counter -->
-  <rect x="345" y="150" width="60" height="22" rx="11" fill="#1e293b"/>
-  <text x="363" y="166" text-anchor="middle" fill="#94a3b8" font-size="11">Lap 24/57</text>
+  <rect x="510" y="65" width="12" height="12" rx="6" fill="#00da7a"/>
+  <rect x="510" y="65" width="12" height="12" rx="6" fill="#00da7a" opacity="0.4">
+    <animate attributeName="opacity" values="0.4;0;0.4" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="transform" type="scale" values="1;2;1" dur="1.5s" repeatCount="indefinite"/>
+  </rect>
+  <text x="530" y="77" fill="#00da7a" font-size="11" font-weight="700">LIVE</text>
+  <text x="530" y="97" fill="#64748b" font-size="10">Lap 24/57</text>
 
-  <!-- Quick Stats -->
-  <rect x="610" y="60" width="170" height="65" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="630" y="85" fill="#64748b" font-size="11">LEADER</text>
-  <text x="630" y="107" fill="#e2e8f0" font-size="16" font-weight="700">L. NORRIS</text>
-  <text x="630" y="118" fill="#64748b" font-size="10">McLaren Mercedes</text>
+  <rect x="590" y="65" width="170" height="32" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.08)" stroke-width="1"/>
+  <text x="602" y="78" fill="#64748b" font-size="10">LEADER</text>
+  <text x="602" y="93" fill="#e2e8f0" font-size="13" font-weight="700">L. NORRIS</text>
+  <text x="682" y="93" fill="#64748b" font-size="9">MCL</text>
 
-  <rect x="795" y="60" width="170" height="65" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="815" y="85" fill="#64748b" font-size="11">FASTEST LAP</text>
-  <text x="815" y="107" fill="#e2e8f0" font-size="16" font-weight="700">1:32.847</text>
-  <text x="815" y="118" fill="#64748b" font-size="10">M. Verstappen · Lap 18</text>
+  <rect x="775" y="65" width="170" height="32" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.08)" stroke-width="1"/>
+  <text x="787" y="78" fill="#64748b" font-size="10">FASTEST LAP</text>
+  <text x="787" y="93" fill="#e2e8f0" font-size="13" font-weight="700">1:32.847</text>
+  <text x="857" y="93" fill="#64748b" font-size="9">VER · L18</text>
 
-  <rect x="980" y="60" width="190" height="65" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="1000" y="85" fill="#64748b" font-size="11">GAP P1 → P2</text>
-  <text x="1000" y="107" fill="#e2e8f0" font-size="16" font-weight="700">+2.341s</text>
-  <text x="1000" y="118" fill="#64748b" font-size="10">Norris → Verstappen</text>
+  <rect x="960" y="65" width="200" height="32" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.08)" stroke-width="1"/>
+  <text x="972" y="78" fill="#64748b" font-size="10">GAP P1 → P2</text>
+  <text x="972" y="93" fill="#e2e8f0" font-size="13" font-weight="700">+2.341s</text>
 
-  <!-- === Race Standings Table === -->
-  <text x="260" y="236" fill="#e2e8f0" font-size="14" font-weight="700">Race Standings</text>
-  <rect x="240" y="250" width="460" height="240" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
+  <!-- === Stat cards row === -->
+  <rect x="220" y="118" width="228" height="52" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.05)" stroke-width="1"/>
+  <text x="238" y="138" fill="#64748b" font-size="9" font-weight="700" letter-spacing="2">DRIVERS</text>
+  <text x="238" y="158" fill="#e2e8f0" font-size="22" font-weight="900">20</text>
+  <text x="280" y="158" fill="#64748b" font-size="10">on track</text>
+
+  <rect x="460" y="118" width="228" height="52" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.05)" stroke-width="1"/>
+  <text x="478" y="138" fill="#64748b" font-size="9" font-weight="700" letter-spacing="2">TRACK</text>
+  <text x="478" y="158" fill="#e2e8f0" font-size="22" font-weight="900">42°C</text>
+  <text x="550" y="158" fill="#64748b" font-size="10">temperature</text>
+
+  <rect x="700" y="118" width="228" height="52" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.05)" stroke-width="1"/>
+  <text x="718" y="138" fill="#64748b" font-size="9" font-weight="700" letter-spacing="2">AIR</text>
+  <text x="718" y="158" fill="#e2e8f0" font-size="22" font-weight="900">28°C</text>
+  <text x="790" y="158" fill="#64748b" font-size="10">ambient</text>
+
+  <rect x="940" y="118" width="240" height="52" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.05)" stroke-width="1"/>
+  <text x="958" y="138" fill="#64748b" font-size="9" font-weight="700" letter-spacing="2">WIND</text>
+  <text x="958" y="158" fill="#e2e8f0" font-size="22" font-weight="900">12 km/h</text>
+  <text x="1040" y="158" fill="#64748b" font-size="10">55% humidity</text>
+
+  <!-- === Live Positions Section === -->
+  <rect x="220" y="182" width="620" height="320" rx="8" fill="url(#card)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="238" y="208" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="2">LIVE POSITIONS</text>
+  <text x="238" y="224" fill="#64748b" font-size="10">Real-time driver standings</text>
 
   <!-- Table header -->
-  <rect x="250" y="258" width="440" height="28" rx="4" fill="#1e293b"/>
-  <text x="267" y="277" fill="#64748b" font-size="10" font-weight="600">POS</text>
-  <text x="310" y="277" fill="#64748b" font-size="10" font-weight="600">DRIVER</text>
-  <text x="480" y="277" fill="#64748b" font-size="10" font-weight="600">TEAM</text>
-  <text x="570" y="277" fill="#64748b" font-size="10" font-weight="600">GAP</text>
-  <text x="630" y="277" fill="#64748b" font-size="10" font-weight="600">STATUS</text>
-  <line x1="250" y1="288" x2="690" y2="288" stroke="#1e293b" stroke-width="1"/>
+  <rect x="236" y="238" width="588" height="24" rx="4" fill="rgba(255,255,255,0.02)"/>
+  <text x="252" y="255" fill="#64748b" font-size="9" font-weight="700">POS</text>
+  <text x="290" y="255" fill="#64748b" font-size="9" font-weight="700">DRIVER</text>
+  <text x="510" y="255" fill="#64748b" font-size="9" font-weight="700">INTERVAL</text>
+  <text x="760" y="255" fill="#64748b" font-size="9" font-weight="700">GAP</text>
 
-  <!-- Row 1 -->
-  <text x="267" y="310" fill="#22c55e" font-size="12" font-weight="700">P1</text>
-  <circle cx="312" cy="307" r="5" fill="#ff8000"/>
-  <text x="326" y="311" fill="#e2e8f0" font-size="12">L. Norris</text>
-  <text x="480" y="311" fill="#94a3b8" font-size="11">McLaren Mercedes</text>
-  <text x="570" y="311" fill="#e2e8f0" font-size="12">—</text>
-  <text x="630" y="311" fill="#22c55e" font-size="11">Racing</text>
+  <!-- Row 1 - Podium gold border -->
+  <line x1="236" y1="264" x2="824" y2="264" stroke="rgba(255,184,0,0.3)" stroke-width="2"/>
+  <rect x="236" y="266" width="588" height="32" rx="4" fill="rgba(255,255,255,0.015)"/>
+  <text x="252" y="288" fill="#ffb800" font-size="13" font-weight="800">P1</text>
+  <rect x="278" y="277" width="10" height="10" rx="5" fill="#ff8000"/>
+  <text x="296" y="288" fill="#e2e8f0" font-size="13" font-weight="700">L. Norris</text>
+  <text x="430" y="288" fill="#64748b" font-size="10">McLaren Mercedes</text>
+  <text x="510" y="288" fill="#64748b" font-size="11">—</text>
+  <text x="760" y="288" fill="#00da7a" font-size="11" font-weight="700">Leader</text>
 
-  <!-- Row 2 -->
-  <line x1="250" y1="320" x2="690" y2="320" stroke="#1e293b" stroke-width="0.5"/>
-  <text x="267" y="336" fill="#94a3b8" font-size="12" font-weight="600">P2</text>
-  <circle cx="312" cy="333" r="5" fill="#0600ef"/>
-  <text x="326" y="337" fill="#e2e8f0" font-size="12">M. Verstappen</text>
-  <text x="480" y="337" fill="#94a3b8" font-size="11">Red Bull Honda</text>
-  <text x="570" y="337" fill="#e2e8f0" font-size="12">+2.341s</text>
-  <text x="630" y="337" fill="#22c55e" font-size="11">Racing</text>
+  <!-- Row 2 - Podium silver border -->
+  <line x1="236" y1="300" x2="824" y2="300" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>
+  <rect x="236" y="302" width="588" height="32" rx="4" fill="rgba(255,255,255,0.01)"/>
+  <text x="252" y="324" fill="#94a3b8" font-size="13" font-weight="700">P2</text>
+  <rect x="278" y="313" width="10" height="10" rx="5" fill="#0600ef"/>
+  <text x="296" y="324" fill="#e2e8f0" font-size="13" font-weight="600">M. Verstappen</text>
+  <text x="430" y="324" fill="#64748b" font-size="10">Red Bull Honda</text>
+  <text x="510" y="324" fill="#00b8ff" font-size="11" font-family="JetBrains Mono">+1.234s</text>
+  <text x="760" y="324" fill="#64748b" font-size="11">+2.341s</text>
 
-  <!-- Row 3 -->
-  <line x1="250" y1="346" x2="690" y2="346" stroke="#1e293b" stroke-width="0.5"/>
-  <text x="267" y="362" fill="#94a3b8" font-size="12" font-weight="600">P3</text>
-  <circle cx="312" cy="359" r="5" fill="#006f62"/>
-  <text x="326" y="363" fill="#e2e8f0" font-size="12">C. Leclerc</text>
-  <text x="480" y="363" fill="#94a3b8" font-size="11">Ferrari</text>
-  <text x="570" y="363" fill="#e2e8f0" font-size="12">+4.103s</text>
-  <text x="630" y="363" fill="#22c55e" font-size="11">Racing</text>
+  <!-- Row 3 - Podium bronze border -->
+  <line x1="236" y1="336" x2="824" y2="336" stroke="rgba(180,83,9,0.2)" stroke-width="1"/>
+  <rect x="236" y="338" width="588" height="32" rx="4" fill="rgba(255,255,255,0.01)"/>
+  <text x="252" y="360" fill="#94a3b8" font-size="13" font-weight="700">P3</text>
+  <rect x="278" y="349" width="10" height="10" rx="5" fill="#dc0000"/>
+  <text x="296" y="360" fill="#e2e8f0" font-size="13" font-weight="600">C. Leclerc</text>
+  <text x="430" y="360" fill="#64748b" font-size="10">Ferrari</text>
+  <text x="510" y="360" fill="#00b8ff" font-size="11" font-family="JetBrains Mono">+0.892s</text>
+  <text x="760" y="360" fill="#64748b" font-size="11">+4.103s</text>
 
   <!-- Row 4 -->
-  <line x1="250" y1="372" x2="690" y2="372" stroke="#1e293b" stroke-width="0.5"/>
-  <text x="267" y="388" fill="#94a3b8" font-size="12" font-weight="600">P4</text>
-  <circle cx="312" cy="385" r="5" fill="#0090ff"/>
-  <text x="326" y="389" fill="#e2e8f0" font-size="12">G. Russell</text>
-  <text x="480" y="389" fill="#94a3b8" font-size="11">Mercedes</text>
-  <text x="570" y="389" fill="#e2e8f0" font-size="12">+5.872s</text>
-  <text x="630" y="389" fill="#22c55e" font-size="11">Racing</text>
+  <line x1="236" y1="372" x2="824" y2="372" stroke="rgba(148,163,184,0.08)" stroke-width="0.5"/>
+  <rect x="236" y="374" width="588" height="32" rx="4" fill="rgba(255,255,255,0.01)"/>
+  <text x="252" y="396" fill="#94a3b8" font-size="13" font-weight="700">P4</text>
+  <rect x="278" y="385" width="10" height="10" rx="5" fill="#00d2be"/>
+  <text x="296" y="396" fill="#e2e8f0" font-size="13">G. Russell</text>
+  <text x="430" y="396" fill="#64748b" font-size="10">Mercedes</text>
+  <text x="510" y="396" fill="#00b8ff" font-size="11" font-family="JetBrains Mono">+0.445s</text>
+  <text x="760" y="396" fill="#64748b" font-size="11">+5.872s</text>
 
   <!-- Row 5 -->
-  <line x1="250" y1="398" x2="690" y2="398" stroke="#1e293b" stroke-width="0.5"/>
-  <text x="267" y="414" fill="#94a3b8" font-size="12" font-weight="600">P5</text>
-  <circle cx="312" cy="411" r="5" fill="#ff8000"/>
-  <text x="326" y="415" fill="#e2e8f0" font-size="12">O. Piastri</text>
-  <text x="480" y="415" fill="#94a3b8" font-size="11">McLaren Mercedes</text>
-  <text x="570" y="415" fill="#e2e8f0" font-size="12">+7.214s</text>
-  <text x="630" y="415" fill="#22c55e" font-size="11">Racing</text>
+  <line x1="236" y1="408" x2="824" y2="408" stroke="rgba(148,163,184,0.08)" stroke-width="0.5"/>
+  <rect x="236" y="410" width="588" height="32" rx="4"/>
+  <text x="252" y="432" fill="#94a3b8" font-size="13" font-weight="700">P5</text>
+  <rect x="278" y="421" width="10" height="10" rx="5" fill="#ff8000"/>
+  <text x="296" y="432" fill="#e2e8f0" font-size="13">O. Piastri</text>
+  <text x="430" y="432" fill="#64748b" font-size="10">McLaren Mercedes</text>
+  <text x="510" y="432" fill="#00b8ff" font-size="11" font-family="JetBrains Mono">+1.102s</text>
+  <text x="760" y="432" fill="#64748b" font-size="11">+7.214s</text>
 
   <!-- Row 6 -->
-  <line x1="250" y1="424" x2="690" y2="424" stroke="#1e293b" stroke-width="0.5"/>
-  <text x="267" y="440" fill="#94a3b8" font-size="12" font-weight="600">P6</text>
-  <circle cx="312" cy="437" r="5" fill="#52c252"/>
-  <text x="326" y="441" fill="#e2e8f0" font-size="12">L. Hamilton</text>
-  <text x="480" y="441" fill="#94a3b8" font-size="11">Ferrari</text>
-  <text x="570" y="441" fill="#e2e8f0" font-size="12">+8.450s</text>
-  <text x="630" y="441" fill="#22c55e" font-size="11">Racing</text>
+  <line x1="236" y1="444" x2="824" y2="444" stroke="rgba(148,163,184,0.08)" stroke-width="0.5"/>
+  <rect x="236" y="446" width="588" height="32" rx="4"/>
+  <text x="252" y="468" fill="#94a3b8" font-size="13" font-weight="700">P6</text>
+  <rect x="278" y="457" width="10" height="10" rx="5" fill="#00da7a"/>
+  <text x="296" y="468" fill="#e2e8f0" font-size="13">L. Hamilton</text>
+  <text x="430" y="468" fill="#64748b" font-size="10">Ferrari</text>
+  <text x="510" y="468" fill="#00b8ff" font-size="11" font-family="JetBrains Mono">+0.678s</text>
+  <text x="760" y="468" fill="#64748b" font-size="11">+8.450s</text>
+
+  <!-- === Track Layout === -->
+  <rect x="860" y="182" width="320" height="320" rx="8" fill="url(#card)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="878" y="208" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="2">TRACK LAYOUT</text>
+  <text x="878" y="224" fill="#64748b" font-size="10">Sakhir International Circuit</text>
+
+  <!-- Bahrain circuit -->
+  <path d="M1020 270 Q980 260 960 280 Q940 300 950 320 Q960 335 980 340 Q1000 345 1010 360 Q1020 380 1040 395 Q1070 410 1095 400 Q1110 390 1120 370 Q1130 350 1120 330 Q1110 315 1090 310 Q1070 305 1060 290 Q1050 275 1050 260 Q1050 255 1020 270 Z" fill="none" stroke="#1e293b" stroke-width="5"/>
+  <path d="M1020 270 Q980 260 960 280 Q940 300 950 320 Q960 335 980 340 Q1000 345 1010 360 Q1020 380 1040 395 Q1070 410 1095 400 Q1110 390 1120 370 Q1130 350 1120 330 Q1110 315 1090 310 Q1070 305 1060 290 Q1050 275 1050 260 Q1050 255 1020 270 Z" fill="none" stroke="#334155" stroke-width="2"/>
+  <line x1="1010" y1="265" x2="1015" y2="275" stroke="#fff" stroke-width="1.5"/>
+
+  <!-- Car dots -->
+  <circle cx="1050" cy="285" r="4" fill="#ff8000"/>
+  <text x="1055" y="290" fill="#ff8000" font-size="7">NOR</text>
+  <circle cx="1010" cy="320" r="4" fill="#0600ef"/>
+  <text x="1015" y="325" fill="#0600ef" font-size="7">VER</text>
+  <circle cx="940" cy="310" r="4" fill="#dc0000"/>
+  <text x="945" y="315" fill="#dc0000" font-size="7">LEC</text>
+  <circle cx="1080" cy="385" r="4" fill="#00d2be"/>
+  <text x="1085" y="390" fill="#00d2be" font-size="7">RUS</text>
+  <circle cx="1120" cy="350" r="4" fill="#ff8000"/>
+  <text x="1125" y="355" fill="#ff8000" font-size="7">PIA</text>
+  <circle cx="975" cy="345" r="4" fill="#00da7a"/>
+  <text x="980" y="350" fill="#00da7a" font-size="7">HAM</text>
 
   <!-- === Strategy Panel === -->
-  <text x="260" y="520" fill="#e2e8f0" font-size="14" font-weight="700">Strategy Recommendation</text>
-  <rect x="240" y="535" width="460" height="150" rx="10" fill="url(#glow)" stroke="#f59e0b" stroke-width="1"/>
+  <rect x="220" y="515" width="620" height="120" rx="8" fill="url(#card)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+  <text x="238" y="540" fill="#ffb800" font-size="11" font-weight="700">STRATEGY RECOMMENDATION</text>
+  <text x="238" y="562" fill="#64748b" font-size="11">Pit window opening — Lap 26. Medium tire degradation detected on top 3 cars.</text>
+  <text x="238" y="580" fill="#64748b" font-size="11">Recommendation: Switch to Hard compound for final stint.</text>
+  <text x="238" y="598" fill="#64748b" font-size="11">Expected undercut delta: +1.8s for Norris over Verstappen.</text>
 
-  <text x="260" y="562" fill="#fbbf24" font-size="13" font-weight="600">⚠️ Pit Window Opening — Lap 26</text>
-  <text x="260" y="584" fill="#94a3b8" font-size="12">Medium tire degradation detected on top 3 cars.</text>
-  <text x="260" y="604" fill="#94a3b8" font-size="12">Recommendation: Switch to Hard compound for final stint.</text>
-  <text x="260" y="630" fill="#94a3b8" font-size="12">Expected undercut delta: +1.8s for Norris over Verstappen.</text>
+  <rect x="238" y="615" width="85" height="24" rx="4" fill="#ff8700"/>
+  <text x="280" y="632" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Undercut</text>
+  <rect x="332" y="615" width="85" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="374" y="632" text-anchor="middle" fill="#94a3b8" font-size="10">Overcut</text>
+  <rect x="426" y="615" width="85" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="468" y="632" text-anchor="middle" fill="#94a3b8" font-size="10">Simulate</text>
 
-  <!-- Over/Undercut buttons -->
-  <rect x="260" y="650" width="90" height="26" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1"/>
-  <text x="305" y="668" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="600">Undercut</text>
-  <rect x="360" y="650" width="90" height="26" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="405" y="668" text-anchor="middle" fill="#94a3b8" font-size="11">Overcut</text>
-  <rect x="460" y="650" width="90" height="26" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="505" y="668" text-anchor="middle" fill="#94a3b8" font-size="11">Simulate</text>
+  <!-- Win prob + Tire -->
+  <rect x="860" y="515" width="150" height="120" rx="8" fill="url(#card)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="878" y="540" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="2">WIN PROBABILITY</text>
+  <circle cx="920" cy="590" r="4" fill="#ff8000"/><text x="932" y="594" fill="#e2e8f0" font-size="11">NOR 43%</text>
+  <circle cx="920" cy="610" r="4" fill="#0600ef"/><text x="932" y="614" fill="#e2e8f0" font-size="11">VER 31%</text>
+  <circle cx="920" cy="630" r="4" fill="#dc0000"/><text x="932" y="634" fill="#e2e8f0" font-size="11">LEC 18%</text>
 
-  <!-- === Right Panel — Track Map === -->
-  <rect x="720" y="140" width="450" height="350" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="745" y="168" fill="#94a3b8" font-size="11">TRACK MAP</text>
+  <rect x="1020" y="515" width="160" height="55" rx="8" fill="url(#card)" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <text x="1038" y="538" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="2">TIRE DEGRADATION</text>
+  <rect x="1040" y="548" width="20" height="14" rx="2" fill="#e8002d" opacity="0.7"/>
+  <text x="1050" y="564" text-anchor="middle" fill="#64748b" font-size="7">S</text>
+  <rect x="1068" y="552" width="20" height="10" rx="2" fill="#ffb800" opacity="0.7"/>
+  <text x="1078" y="564" text-anchor="middle" fill="#64748b" font-size="7">M</text>
+  <rect x="1096" y="556" width="20" height="6" rx="2" fill="#94a3b8" opacity="0.5"/>
+  <text x="1106" y="564" text-anchor="middle" fill="#64748b" font-size="7">H</text>
 
-  <!-- Track (simplified Sakhir layout) -->
-  <!-- Bahrain circuit shape -->
-  <path d="M890 200 Q850 200 830 230 Q810 260 820 290 Q830 310 850 320 Q870 330 880 350 Q890 380 910 400 Q940 420 970 410 Q990 400 1000 380 Q1010 360 1000 340 Q990 320 970 310 Q950 300 940 280 Q930 260 930 240 Q930 210 910 200 Z" fill="none" stroke="#334155" stroke-width="3"/>
-  <path d="M890 200 Q850 200 830 230 Q810 260 820 290 Q830 310 850 320 Q870 330 880 350 Q890 380 910 400 Q940 420 970 410 Q990 400 1000 380 Q1010 360 1000 340 Q990 320 970 310 Q950 300 940 280 Q930 260 930 240 Q930 210 910 200 Z" fill="none" stroke="#1e293b" stroke-width="6"/>
-
-  <!-- Start/Finish line -->
-  <line x1="880" y1="195" x2="885" y2="205" stroke="#fff" stroke-width="2"/>
-
-  <!-- Car positions on track -->
-  <circle cx="920" cy="240" r="5" fill="#ff8000"/><text x="926" y="245" fill="#ff8000" font-size="8">NOR</text>
-  <circle cx="890" cy="280" r="5" fill="#0600ef"/><text x="896" y="285" fill="#0600ef" font-size="8">VER</text>
-  <circle cx="960" cy="370" r="5" fill="#006f62"/><text x="966" y="375" fill="#006f62" font-size="8">LEC</text>
-  <circle cx="1000" cy="340" r="5" fill="#0090ff"/><text x="1006" y="345" fill="#0090ff" font-size="8">RUS</text>
-  <circle cx="850" cy="310" r="5" fill="#ff8000"/><text x="856" y="315" fill="#ff8000" font-size="8">PIA</text>
-  <circle cx="840" cy="250" r="5" fill="#52c252"/><text x="846" y="255" fill="#52c252" font-size="8">HAM</text>
-
-  <!-- Legend -->
-  <text x="745" y="440" fill="#64748b" font-size="10">● Position · ● Pit (6 cars shown)</text>
-
-  <!-- Tire degradation mini chart -->
-  <rect x="720" y="460" width="450" height="80" rx="10" fill="url(#glow)" stroke="#1e293b" stroke-width="1"/>
-  <text x="745" y="485" fill="#64748b" font-size="11">TIRE DEGRADATION</text>
-
-  <!-- Chart bars -->
-  <rect x="760" y="500" width="30" height="30" rx="3" fill="#ff8000" opacity="0.8"/>
-  <text x="775" y="544" text-anchor="middle" fill="#94a3b8" font-size="9">NOR</text>
-  <rect x="805" y="510" width="30" height="20" rx="3" fill="#0600ef" opacity="0.8"/>
-  <text x="820" y="544" text-anchor="middle" fill="#94a3b8" font-size="9">VER</text>
-  <rect x="850" y="495" width="30" height="35" rx="3" fill="#006f62" opacity="0.8"/>
-  <text x="865" y="544" text-anchor="middle" fill="#94a3b8" font-size="9">LEC</text>
-  <rect x="895" y="520" width="30" height="10" rx="3" fill="#0090ff" opacity="0.8"/>
-  <text x="910" y="544" text-anchor="middle" fill="#94a3b8" font-size="9">RUS</text>
-  <rect x="940" y="505" width="30" height="25" rx="3" fill="#ff8000" opacity="0.5"/>
-  <text x="955" y="544" text-anchor="middle" fill="#94a3b8" font-size="9">PIA</text>
-
-  <text x="1000" y="525" fill="#64748b" font-size="9">% wear →</text>
-
-  <!-- Predictions pill -->
-  <rect x="720" y="555" width="220" height="35" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="1"/>
-  <text x="740" y="578" fill="#a78bfa" font-size="12" font-weight="600">AI Winner Prediction</text>
-  <text x="940" y="578" fill="#e2e8f0" font-size="12">NOR 43% · VER 31%</text>
-
-  <!-- Timer -->
-  <rect x="955" y="555" width="215" height="35" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="975" y="578" fill="#94a3b8" font-size="12">Next update in 3.2s</text>
-
-  <!-- Bottom bar -->
-  <rect x="0" y="720" width="1200" height="30" fill="#0f172a"/>
-  <line x1="0" y1="720" x2="1200" y2="720" stroke="#1e293b" stroke-width="1"/>
-  <text x="25" y="740" fill="#475569" font-size="10">OpenF1 API · Connected</text>
-  <text x="450" y="740" fill="#475569" font-size="10">Redis · Connected</text>
-  <text x="820" y="740" fill="#475569" font-size="10">PostgreSQL · Connected</text>
-  <text x="1100" y="740" fill="#475569" font-size="10">v1.0.0</text>
+  <!-- === Bottom Bar === -->
+  <rect x="0" y="720" width="1200" height="30" fill="#06080f"/>
+  <line x1="0" y1="720" x2="1200" y2="720" stroke="rgba(148,163,184,0.08)" stroke-width="1"/>
+  <text x="220" y="740" fill="#475569" font-size="9">OpenF1 · Connected</text>
+  <text x="500" y="740" fill="#475569" font-size="9">PostgreSQL · Connected</text>
+  <text x="780" y="740" fill="#475569" font-size="9">Redis · Connected</text>
+  <text x="1080" y="740" fill="#475569" font-size="9">v1.0.0</text>
 </svg>
